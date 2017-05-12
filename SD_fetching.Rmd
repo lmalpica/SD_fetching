@@ -1,0 +1,240 @@
+---
+title: "Chemical parameter manipulation"
+author: "Luis Malpica Cruz"
+date: "May 11, 2017"
+output:
+  pdf_document: default
+  html_document:
+    code_folding: hide
+---
+
+```{r}
+#Load packages and files####
+#install.packages("outliers")
+require(outliers)
+require(dplyr)
+
+##Call data from RSD points 
+d <- read.table("data/SI060_08_09_11.csv",sep=",", header=T)
+
+#d <- do.call("rbind", sapply("data/SI060_08_09_11.csv", read.csv, simplify = FALSE,sep=",", header=T))
+
+#read_csv_filename <- function(filename){
+#    ret <- read.csv(filename)
+#    ret$Source <- filename #EDIT
+#    ret
+#}
+
+#import.list <- ldply("SI060_08_09_11.", read_csv_filename)
+
+```
+
+```{r}
+#NO data manipulation####
+doutx <- d %>% select(starts_with("NO")) %>% na.omit %>% apply(1, function(x) rm.outlier(x)) %>% t %>% as.data.frame
+
+dout <- cbind((as.data.frame(apply(doutx, 1, function(x) mean(x)))),
+              (as.data.frame(apply(doutx, 1, function(x) sd(x)))))
+doutx <- cbind(doutx,dout)
+doutx$colID <- row.names(doutx)
+
+#assign row ID and depth columns
+doutx$depth <- rep(NA, length(doutx[,1]))
+for (i in 1:length(doutx[,1])) {
+  if(doutx$colID[i] %in% 1) {
+    doutx$depth[i] <- 10
+  } 
+  if(doutx$colID[i] %in% 2) {
+    doutx$depth[i] <- 20
+  }
+  if(doutx$colID[i] %in% 3) {
+    doutx$depth[i] <- 40
+  }     
+  if(doutx$colID[i] %in% 4) {
+    doutx$depth[i] <- 60
+  }
+  if(doutx$colID[i] %in% 5) {
+    doutx$depth[i] <- 75
+  } 
+  if(doutx$colID[i] %in% 6) {
+    doutx$depth[i] <- 85
+  }
+  if(doutx$colID[i] %in% 7) {
+    doutx$depth[i] <- 90
+  }     
+  if(doutx$colID[i] %in% 8) {
+    doutx$depth[i] <- 97
+  }
+  if(doutx$colID[i] %in% 9) {
+    doutx$depth[i] <- 100
+  } 
+  if(doutx$colID[i] %in% 10) {
+    doutx$depth[i] <- 110
+  }
+  if(doutx$colID[i] %in% 11) {
+    doutx$depth[i] <- 120
+  }     
+  if(doutx$colID[i] %in% 12) {
+    doutx$depth[i] <- 135
+  }
+  if(doutx$colID[i] %in% 13) {
+    doutx$depth[i] <- 150
+  } 
+  if(doutx$colID[i] %in% 14) {
+    doutx$depth[i] <- 165
+  }
+  if(doutx$colID[i] %in% 15) {
+    doutx$depth[i] <- 185
+  }     
+  if(doutx$colID[i] %in% 16) {
+    doutx$depth[i] <- 200
+  }
+  }
+#Assign names
+colnames(doutx) <- c("NO_1","NO_2","NO_Mean","NO_SD","rID","depth")
+NO <- dplyr::select(doutx, NO_1, NO_2, NO_Mean, NO_SD, depth)
+```
+
+```{r}
+#NH data manipulation####
+doutx <- d %>% select(starts_with("NH")) %>% na.omit %>% apply(1, function(x) rm.outlier(x)) %>% t %>% as.data.frame
+
+dout <- cbind((as.data.frame(apply(doutx, 1, function(x) mean(x)))),
+              (as.data.frame(apply(doutx, 1, function(x) sd(x)))))
+doutx <- cbind(doutx,dout)
+doutx$colID <- row.names(doutx)
+
+#assign row ID and depth columns
+doutx$depth <- rep(NA, length(doutx[,1]))
+for (i in 1:length(doutx[,1])) {
+  if(doutx$colID[i] %in% 1) {
+    doutx$depth[i] <- 10
+  } 
+  if(doutx$colID[i] %in% 2) {
+    doutx$depth[i] <- 20
+  }
+  if(doutx$colID[i] %in% 3) {
+    doutx$depth[i] <- 40
+  }     
+  if(doutx$colID[i] %in% 4) {
+    doutx$depth[i] <- 60
+  }
+  if(doutx$colID[i] %in% 5) {
+    doutx$depth[i] <- 75
+  } 
+  if(doutx$colID[i] %in% 6) {
+    doutx$depth[i] <- 85
+  }
+  if(doutx$colID[i] %in% 7) {
+    doutx$depth[i] <- 90
+  }     
+  if(doutx$colID[i] %in% 8) {
+    doutx$depth[i] <- 97
+  }
+  if(doutx$colID[i] %in% 9) {
+    doutx$depth[i] <- 100
+  } 
+  if(doutx$colID[i] %in% 10) {
+    doutx$depth[i] <- 110
+  }
+  if(doutx$colID[i] %in% 11) {
+    doutx$depth[i] <- 120
+  }     
+  if(doutx$colID[i] %in% 12) {
+    doutx$depth[i] <- 135
+  }
+  if(doutx$colID[i] %in% 13) {
+    doutx$depth[i] <- 150
+  } 
+  if(doutx$colID[i] %in% 14) {
+    doutx$depth[i] <- 165
+  }
+  if(doutx$colID[i] %in% 15) {
+    doutx$depth[i] <- 185
+  }     
+  if(doutx$colID[i] %in% 16) {
+    doutx$depth[i] <- 200
+  }
+  }
+#Assign names
+colnames(doutx) <- c("NH_1","NH_2","NH_Mean","NH_SD","rID","depth")
+NH <- dplyr::select(doutx, NH_1, NH_2, NH_Mean, NH_SD, depth)
+```
+
+```{r}
+#SU data manipulation####
+doutx <- d %>% select(starts_with("SU")) %>% na.exclude %>% apply(1, function(x) rm.outlier(x)) %>% t %>% as.data.frame
+
+dout <- cbind((as.data.frame(apply(doutx, 1, function(x) mean(x)))),
+              (as.data.frame(apply(doutx, 1, function(x) sd(x)))))
+doutx <- cbind(doutx,dout)
+doutx$colID <- row.names(doutx)
+
+#assign row ID and depth columns
+doutx$depth <- rep(NA, length(doutx[,1]))
+for (i in 1:length(doutx[,1])) {
+  if(doutx$colID[i] %in% 1) {
+    doutx$depth[i] <- 10
+  } 
+  if(doutx$colID[i] %in% 2) {
+    doutx$depth[i] <- 20
+  }
+  if(doutx$colID[i] %in% 3) {
+    doutx$depth[i] <- 40
+  }     
+  if(doutx$colID[i] %in% 4) {
+    doutx$depth[i] <- 60
+  }
+  if(doutx$colID[i] %in% 5) {
+    doutx$depth[i] <- 75
+  } 
+  if(doutx$colID[i] %in% 6) {
+    doutx$depth[i] <- 85
+  }
+  if(doutx$colID[i] %in% 7) {
+    doutx$depth[i] <- 90
+  }     
+  if(doutx$colID[i] %in% 8) {
+    doutx$depth[i] <- 97
+  }
+  if(doutx$colID[i] %in% 9) {
+    doutx$depth[i] <- 100
+  } 
+  if(doutx$colID[i] %in% 10) {
+    doutx$depth[i] <- 110
+  }
+  if(doutx$colID[i] %in% 11) {
+    doutx$depth[i] <- 120
+  }     
+  if(doutx$colID[i] %in% 12) {
+    doutx$depth[i] <- 135
+  }
+  if(doutx$colID[i] %in% 13) {
+    doutx$depth[i] <- 150
+  } 
+  if(doutx$colID[i] %in% 14) {
+    doutx$depth[i] <- 165
+  }
+  if(doutx$colID[i] %in% 15) {
+    doutx$depth[i] <- 185
+  }     
+  if(doutx$colID[i] %in% 16) {
+    doutx$depth[i] <- 200
+  }
+  }
+#Assign names
+colnames(doutx) <- c("SU_1","SU_2","SU_Mean","SU_SD","rID","depth")
+SU <- dplyr::select(doutx, SU_1, SU_2, SU_Mean, SU_SD, depth)
+SU <- dplyr::mutate(SU, SU_MeanM = (((SU_Mean/1000)/34.082)*1000000))
+SU <- dplyr::mutate(SU, SU_SDM = (((SU_SD/1000)/34.082)*1000000))
+
+```
+
+```{r}
+#Merge parameters' data####
+Par_SI060 <- merge(NH,NO, all.x = T)
+Par_SI060 <- merge(Par_SI060,SU, all.x = T)
+Par_SI060$SI_ID <- c(rep("SI060",16))
+```
+
+
